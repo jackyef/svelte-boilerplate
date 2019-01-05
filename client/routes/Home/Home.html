@@ -1,21 +1,28 @@
-<div id="home-container">
-  <SearchBar />
+<div class="container">
+  <Header />
+  <Content />
   <Footer />
 </div>
 
 <!-- styles -->
 <style>
-
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 </style>
 
 <!-- script -->
 <script>
-  import SearchBar from './components/SearchBar/SearchBar.html';
+  import Header from './components/Header/Header.html';
+  import Content from './components/Content/Content.html';
   import Footer from './components/Footer/Footer.html';
 
   export default {
     components: { 
-      SearchBar,
+      Header,
+      Content,
       Footer,
     },
   }
