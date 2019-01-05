@@ -1,13 +1,13 @@
-import path from 'path';
-import appRootDir from 'app-root-dir';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+const path = require('path');
+const appRootDir = require('app-root-dir');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 const dir = process.env.DIR;
 const prod = mode === 'production';
 const entryPath = path.resolve(appRootDir.get(), dir, 'index.js');
 
-export default {
+module.exports = {
 	entry: {
 		bundle: entryPath,
 	},

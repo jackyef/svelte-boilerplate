@@ -2,7 +2,7 @@
 node_modules
 
 # error logs
-*error.logs
+*error.log
 
 # built bundle
 */build/*

@@ -26,9 +26,10 @@ const buildPath = path.join(appRootDir.get(), './build', dir);
 const webpackConfig = require(path.join(appRootDir.get(), dir, './webpack.config.babel.js')).default;
 
 /**
- * Make sure the build path exists
+ * Make sure the build path exists and empties it
  */
 fs.ensureDirSync(buildPath);
+fs.emptyDirSync(buildPath);
 
 const build = () => {
   return new Promise((resolve, reject) => {
