@@ -2,11 +2,13 @@ const path = require('path');
 const appRootDir = require('app-root-dir');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const ifElse = require(path.resolve(appRootDir.get(), 'utils/logic/ifElse')).default;
 const { normalizeCSS, criticalCSS } = require(path.resolve(appRootDir.get(), 'utils/html/critical-css'));
+
 const mode = process.env.NODE_ENV || 'development';
-const dir = process.env.DIR;
 const prod = mode === 'production';
+const ifProd = ifElse(prod);
+const dir = process.env.DIR;
 const entryPath = path.resolve(appRootDir.get(), dir, 'index.js');
 const baseShellPath = path.resolve(appRootDir.get(), 'static', 'base-shell.ejs');
 
@@ -26,7 +28,7 @@ const productionPlugins = [
 	}),
 ];
 
-module.exports = {
+module.exports.default = {
 	entry: {
 		bundle: entryPath,
 	},
@@ -60,7 +62,7 @@ module.exports = {
 					 * MiniCssExtractPlugin doesn't support HMR.
 					 * For developing, use 'style-loader' instead.
 					 * */
-					prod ? MiniCssExtractPlugin.loader : 'style-loader',
+					ifProd(MiniCssExtractPlugin.loader, 'style-loader'),
 					'css-loader'
 				]
 			}
@@ -69,9 +71,10 @@ module.exports = {
 	mode,
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: prod ? '[hash].css' : '[name].css',
+			filename: ifProd('[name].[hash].css', '[name].css'),
+			chunkFilename: ifProd('[id].[hash].css', '[id].css'),
 		}),
-		...(prod ? productionPlugins : []),
+		...ifProd(productionPlugins, []).filter(Boolean),
 	],
-	devtool: prod ? false: 'source-map'
+	devtool: ifProd(false, 'source-map'),
 };

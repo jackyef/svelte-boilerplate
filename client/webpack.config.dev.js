@@ -1,9 +1,11 @@
+require('@babel/register');
+require('ejs-loader');
+
 const path = require('path');
 const appRootDir = require('app-root-dir');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-require('ejs-loader');
 
-const baseConfig = require('./webpack.config.babel');
+const baseConfig = require('./webpack.config.babel').default;
 const { normalizeCSS, criticalCSS } = require(path.resolve(appRootDir.get(), 'utils/html/critical-css'));
 
 const dir = process.env.DIR;

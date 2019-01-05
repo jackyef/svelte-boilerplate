@@ -2,7 +2,7 @@ module.exports = {
   extends: ['eslint:recommended'],
   plugins: ['html', '@tivac/svelte'],
   parserOptions: {
-    ecmaVersion: 7,
+    ecmaVersion: 2018,
     sourceType: 'module',
     ecmaFeatures: {
       experimentalObjectRestSpread: true,
