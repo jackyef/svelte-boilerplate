@@ -7,7 +7,7 @@ const baseConfig = require('./webpack.config.babel');
 
 const dir = process.env.DIR;
 const buildPath = path.resolve(appRootDir.get(), 'build', dir);
-const baseShellPath = path.resolve(appRootDir.get(), 'static', 'base-shell.html');
+const baseShellPath = path.resolve(appRootDir.get(), 'static', 'base-shell.ejs');
 
 console.log('baseshellpath', baseShellPath);
 
