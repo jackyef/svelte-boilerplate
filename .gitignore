@@ -1,0 +1,9 @@
+# node_modules
+node_modules
+
+# error logs
+*error.logs
+
+# built bundle
+*/build/*
+build/
