@@ -73,7 +73,8 @@ module.exports.default = {
 					 * MiniCssExtractPlugin doesn't support HMR.
 					 * For developing, use 'style-loader' instead.
 					 * */
-					ifProd(MiniCssExtractPlugin.loader, 'style-loader'),
+					// ifProd(MiniCssExtractPlugin.loader, 'style-loader'),
+					'style-loader', // For now, let's use style-loader so the styles are injected in JS files
 					'css-loader'
 				]
 			}
