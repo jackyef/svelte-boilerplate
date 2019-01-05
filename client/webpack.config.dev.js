@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 require('ejs-loader');
 
 const baseConfig = require('./webpack.config.babel');
+const { normalizeCSS, criticalCSS } = require(path.resolve(appRootDir.get(), 'utils/html/critical-css'));
 
 const dir = process.env.DIR;
 const buildPath = path.resolve(appRootDir.get(), 'build', dir);
@@ -26,6 +27,8 @@ const webpackConfig = {
 			 *  because we defined it in baseConfig.modules.rules
 			 */
 			template: `!!ejs-loader!${baseShellPath}`,
+			normalizeCSS,
+			criticalCSS,
 			chunksSortMode: 'none',
 		}),
 	],
