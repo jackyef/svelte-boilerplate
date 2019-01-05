@@ -43,7 +43,7 @@ module.exports.default = {
 	module: {
 		rules: [
 			{
-				test: /\.html$/,
+				test: /\.(html|svelte)$/,
 				exclude: /node_modules/,
 				use: {
 					loader: 'svelte-loader',
@@ -51,7 +51,18 @@ module.exports.default = {
 						skipIntroByDefault: true,
 						nestedTransitions: true,
 						emitCss: true,
-						hotReload: true
+						hotReload: true,
+						preprocess: require('svelte-preprocess')({
+							transformers: {
+								postcss: {
+									plugins: [
+										require('autoprefixer')({ 
+											browsers: 'last 4 versions',
+										}),
+									]
+								}
+							}
+						})
 					}
 				}
 			},
