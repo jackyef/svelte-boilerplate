@@ -12,9 +12,9 @@
   <div class="button-container">
     <button on:click="set({ showLazyLoadedContent: !showLazyLoadedContent })">
       {#if !showLazyLoadedContent}
-        Show a lazy-loaded component
+        Show lazy-loaded components
       {:else}
-        Hide the lazy-loaded component
+        Hide the lazy-loaded components
       {/if}
     </button>
   </div>
@@ -33,6 +33,24 @@
           {contentLoadableError}
         </pre>
         <button on:click="refs.contentLoadable.load()">
+          Try again
+        </button>
+      </div>
+    </Loadable>
+
+    <Loadable 
+      ref:contentLoadable2 
+      loader={SSRContentLoader} 
+      bind:error=contentLoadable2Error
+      delay={500}
+    >
+      <div slot="loading">Loading...</div>
+      <div slot="error">
+        An error occured while trying to load the chunk.
+        <pre>
+          {contentLoadable2Error}
+        </pre>
+        <button on:click="refs.contentLoadable2.load()">
           Try again
         </button>
       </div>
@@ -79,12 +97,14 @@
   import Footer from './components/Footer/Footer.html';
 
   import LazyLoadedContentLoader from './components/LazyLoadedContent';
+  import SSRContentLoader from './components/SSRContent';
 
   export default {
     data() {
       return {
         showLazyLoadedContent: false,
         LazyLoadedContentLoader,
+        SSRContentLoader,
       };
     },
     components: { 

@@ -3,8 +3,8 @@ This is a svelte webapp boilerplate, created for learning experiences. It is ver
 
 Goals:
 - [x] Codesplitting/Lazyloading
+- [x] Out of the box SSR Support
 - [ ] State management
-- [ ] Full SSR capabilities
 - [ ] Routing
 
 ## Commands
@@ -29,7 +29,12 @@ OR
 npm run dev:client
 ```
 
-The SSR server is still in the works
+To run the SSR server
+```
+yarn dev:client 
+THEN
+yarn dev:server
+```
 
 ## Contributing
 Feel free to create PR.

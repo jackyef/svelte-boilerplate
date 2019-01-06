@@ -5,6 +5,9 @@ import { createHtmlHeader, createHtmlFooter } from './createHtml';
 import App from '../../../client/App.html';
 import assets from '../../../build/client/assets.json';
 
+console.log('renderer index reloaded');
+console.log('renderer index reloaded');
+
 const getUsedAssets = assets => {
   /**
    * Because we can't implement something like Loadable.Capture currently,

@@ -1,0 +1,1 @@
+export default () => import(/* webpackChunkName: "ssr-content" */'./SSRContent.html');
