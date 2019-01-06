@@ -14,7 +14,12 @@
   </div>
 
   {#if showLazyLoadedContent}
-    <Loadable ref:contentLoadable loader={LazyLoadedContentLoader} bind:contentLoadableError=error>
+    <Loadable 
+      ref:contentLoadable 
+      loader={LazyLoadedContentLoader} 
+      bind:error=contentLoadableError
+      delay={500}
+    >
       <div slot="loading">Loading...</div>
       <div slot="error">
         An error occured while trying to load the chunk.

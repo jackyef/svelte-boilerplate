@@ -2,6 +2,7 @@ const path = require('path');
 const appRootDir = require('app-root-dir');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const ifElse = require(path.resolve(appRootDir.get(), 'utils/logic/ifElse')).default;
 const { normalizeCSS, criticalCSS } = require(path.resolve(appRootDir.get(), 'utils/html/critical-css'));
 
@@ -10,7 +11,11 @@ const prod = mode === 'production';
 const ifProd = ifElse(prod);
 const dir = process.env.DIR;
 const entryPath = path.resolve(appRootDir.get(), dir, 'index.js');
+const buildPath = path.join(appRootDir.get(), './build/client');
 const baseShellPath = path.resolve(appRootDir.get(), 'static', 'base-shell.ejs');
+const host = process.env['CLIENT.HOST'] || 'localhost';
+const port = process.env['CLIENT.PORT'] || 8080;
+const publicPath = ifProd(process.env['PUBLIC_PATH'], `http://${host}:${port}/`);
 
 const productionPlugins = [
 	new HtmlWebpackPlugin({
@@ -36,9 +41,10 @@ module.exports.default = {
 		extensions: ['.js', '.html']
 	},
 	output: {
-		path: path.join(appRootDir.get(), './build/client'),
+		path: buildPath,
 		filename: '[name].js',
-		chunkFilename: '[name].[id].js'
+		chunkFilename: '[name].[id].js',
+		publicPath,
 	},
 	module: {
 		rules: [
@@ -87,6 +93,9 @@ module.exports.default = {
 			chunkFilename: ifProd('[id].[hash].css', '[id].css'),
 		}),
 		...ifProd(productionPlugins, []).filter(Boolean),
+		new AssetsWebpackPlugin({
+			path: buildPath,
+		}),
 	],
 	devtool: ifProd(false, 'source-map'),
 };
