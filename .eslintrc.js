@@ -1,8 +1,9 @@
 module.exports = {
   extends: ['eslint:recommended'],
-  plugins: ['html', '@tivac/svelte'],
+  plugins: ['html', '@tivac/svelte', 'import'],
+  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 8,
     sourceType: 'module',
     ecmaFeatures: {
       experimentalObjectRestSpread: true,
@@ -10,6 +11,7 @@ module.exports = {
   },
   rules: {
     'no-console': 'off',
+    'import/no-dynamic-require': 'off',
   },
   env: {
     node: true,

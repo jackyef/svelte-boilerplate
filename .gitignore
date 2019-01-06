@@ -7,3 +7,6 @@ node_modules
 # built bundle
 */build/*
 build/
+
+# env
+.env

@@ -2,10 +2,10 @@
 This is a svelte webapp boilerplate, created for learning experiences. It is very much still a work in progress, feel free to contribute and give inputs!
 
 Goals:
+- [x] Codesplitting/Lazyloading
 - [ ] State management
 - [ ] Full SSR capabilities
 - [ ] Routing
-- [ ] Codesplitting
 
 ## Commands
 Install dependencies

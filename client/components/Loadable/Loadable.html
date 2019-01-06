@@ -1,0 +1,110 @@
+<!--
+  Based on svelte-loadable (https://github.com/kaisermann/svelte-loadable)
+  Credits to: kaisermann
+-->
+
+{#if state === STATES.ERROR} 
+  <slot name="error" />
+{:elseif state === STATES.TIMEOUT}
+  <slot name="timeout" />
+{:elseif state === STATES.LOADING}
+  <slot name="loading" />
+{:elseif state === STATES.SUCCESS && targetComponent}
+  {#if hasSuccessSlot}
+     <!-- there is a success slot inside the Loadable component, render that -->
+    <slot name="success" />  
+  {:else}
+    <!-- else, render the targetComponent -->
+    <svelte:component this={targetComponent} />
+  {/if}
+{/if}
+
+<script>
+  const STATES = {
+    INITIALIZED: 0,
+    LOADING: 1,
+    SUCCESS: 2,
+    ERROR: 3,
+    TIMEOUT: 4,
+  };
+
+  export default {
+    data() {
+      return {
+        /* these 3 are expected to be passed as attributes (like react props) on usage */
+        delay: 0,
+        timeout: null,
+        loader: null,
+
+        _loadTimer: null,
+        _timeoutTimer: null,
+        hasSuccessSlot: false,
+        targetComponent: null,
+        state: STATES.INITIALIZED,
+        STATES,
+      }
+    },
+    oncreate() {
+      if (this.options.slots && this.options.slots.success) {
+        this.set({ hasSuccessSlot: true });
+      }
+
+      this.load();
+    },
+    methods: {
+      _clearTimers() {
+        const { _loadTimer, _timeoutTimer } = this.get();
+        clearTimeout(_loadTimer);
+        clearTimeout(_timeoutTimer);
+      },
+
+      load() {
+        const { loader, delay, timeout } = this.get();
+        this._clearTimers();
+
+        if (typeof loader === 'function') {
+          // loader is a function that return a promise, such as dynamic import
+          // we set the state to `loading` after `delay` milliseconds
+          this.set({
+            _loadTimer: setTimeout(() => {
+              this.set({
+                state: STATES.LOADING,
+                error: false,
+                targetComponent: false,
+              });
+            }, Number(delay))
+          });
+
+          if (timeout) {
+            // if timeout is specified
+            this.set({
+              _timeoutTimer: setTimeout(() => {
+                this.set({
+                  state: STATES.TIMEOUT
+                });
+              }, timeout)
+            });
+          }
+
+          loader()
+            .then(componentModule => {
+              this.set({
+                state: STATES.SUCCESS,
+                targetComponent: componentModule.default || componentModule,
+              });
+
+              this._clearTimers();
+            })
+            .catch(error => {
+              this.set({
+                state: STATES.ERROR,
+                error,
+              });
+
+              this._clearTimers();
+            })
+        }
+      }
+    }
+  }
+</script>

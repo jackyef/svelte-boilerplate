@@ -1,0 +1,1 @@
+export default () => import(/* webpackChunkName: "lazy-loaded-content" */'./LazyLoadedContent.html');

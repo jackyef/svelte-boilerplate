@@ -1,6 +1,33 @@
 <div class="container">
   <Header />
   <Content />
+
+  <div class="spacer" />
+  <div class="button-container">
+    <button on:click="set({ showLazyLoadedContent: !showLazyLoadedContent })">
+      {#if !showLazyLoadedContent}
+        Show a lazy-loaded component
+      {:else}
+        Hide the lazy-loaded component
+      {/if}
+    </button>
+  </div>
+
+  {#if showLazyLoadedContent}
+    <Loadable ref:contentLoadable loader={LazyLoadedContentLoader} bind:contentLoadableError=error>
+      <div slot="loading">Loading...</div>
+      <div slot="error">
+        An error occured while trying to load the chunk.
+        <pre>
+          {contentLoadableError}
+        </pre>
+        <button on:click="refs.contentLoadable.load()">
+          Try again
+        </button>
+      </div>
+    </Loadable>
+  {/if}
+
   <Footer />
 </div>
 
@@ -11,19 +38,49 @@
     flex-direction: column;
     min-height: 100vh;
   }
+
+  .spacer {
+    height: 24px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    border-radius: 4px;
+    padding: 8px 16px;
+    border: none;
+    display: inline-block;
+    background: #305187;
+    color: #fafafa;
+  }
 </style>
 
 <!-- script -->
 <script>
+  import Loadable from '../../components/Loadable/Loadable.html';
+
   import Header from './components/Header/Header.html';
   import Content from './components/Content/Content.html';
   import Footer from './components/Footer/Footer.html';
 
+  import LazyLoadedContentLoader from './components/LazyLoadedContent';
+
   export default {
+    data() {
+      return {
+        showLazyLoadedContent: false,
+        LazyLoadedContentLoader,
+      };
+    },
     components: { 
       Header,
       Content,
       Footer,
+      Loadable,
     },
   }
 </script>

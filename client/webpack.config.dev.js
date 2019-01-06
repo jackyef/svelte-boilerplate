@@ -34,6 +34,8 @@ const webpackConfig = {
 	],
 	devServer: {
 		contentBase: buildPath,
+		host: process.env['CLIENT.HOST'] || 'localhost',
+		port: process.env['CLIENT.PORT'] || 8080,
 	}
 };
 
