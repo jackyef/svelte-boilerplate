@@ -63,6 +63,7 @@ module.exports.default = {
             options: {
               skipIntroByDefault: true,
               nestedTransitions: true,
+              hydratable: true,
               emitCss: true,
 							hotReload: true,
 							hotOptions: {

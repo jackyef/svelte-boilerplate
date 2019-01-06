@@ -4,7 +4,6 @@
   "description": "Svelte boilerplate using webpack",
   "main": "index.js",
   "dependencies": {
-    "combined-stream": "^1.0.7",
     "debug": "^4.1.1",
     "koa": "^2.6.2",
     "koa-compress": "^3.0.0",
