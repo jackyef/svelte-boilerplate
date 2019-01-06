@@ -5,6 +5,7 @@ const path = require('path');
 const appRootDir = require('app-root-dir');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const WriteAssetsJsonPlugin = require('../utils/webpack/plugins/WriteAssetsJsonPlugin').default;
 const baseConfig = require('./webpack.config.babel').default;
 const { normalizeCSS, criticalCSS } = require(path.resolve(appRootDir.get(), 'utils/html/critical-css'));
 
@@ -31,11 +32,14 @@ const webpackConfig = {
 			criticalCSS,
 			chunksSortMode: 'none',
 		}),
+		new WriteAssetsJsonPlugin({
+			to: buildPath,
+		}),
 	],
 	devServer: {
 		contentBase: buildPath,
 		host: process.env['CLIENT.HOST'] || 'localhost',
-		port: process.env['CLIENT.PORT'] || 8080,
+		port: process.env['CLIENT.PORT'] || 8081,
 	}
 };
 

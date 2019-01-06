@@ -1,7 +1,13 @@
 <div>
   <Home />
 </div>
+<!--
+  Data can also be accessed here by simply using curly brackets `{}`
+  If you want to access `name` inside `data`, you can just do {name}
 
+  If you want to access store variables, just prefix it with `$`.
+  e. g: To access `name` inside `store`, you can do {$name}
+-->
 <!-- styles -->
 <style>
   
@@ -12,6 +18,13 @@
   import Home from './routes/Home/Home.html';
 
   export default {
+    oncreate() {
+      // You can access injected `data` here by doing the following:
+      console.log(this.get());
+
+      // If you injected a `store`, you can access it by:
+      console.log(this.store.get());
+    },
     components: { Home },
   }
 </script>
