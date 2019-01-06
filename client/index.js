@@ -5,12 +5,15 @@ const store = new Store({
   name: 'world (from store)',
 });
 
+const target = document.getElementById('svelte-root');
+// target.innerHTML = '';
 const app = new App({
-  target: document.getElementById('svelte-root'),
+  target,
   data: {
     name: 'world',
   },
   store,
+	hydrate: true,
 });
 
 window.app = app;

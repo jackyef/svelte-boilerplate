@@ -1,0 +1,33 @@
+{#if !SSR && show}
+<a class="github-button" href="https://github.com/jackyef" data-size="large" data-show-count="true" aria-label="Follow @jackyef on GitHub">Follow
+	@jackyef
+</a>
+<a class="github-button" href="https://github.com/jackyef/svelte-boilerplate/subscription" data-icon="octicon-eye" data-size="large"
+ data-show-count="true" aria-label="Watch jackyef/svelte-boilerplate on GitHub">Watch</a>
+<a class="github-button" href="https://github.com/jackyef/svelte-boilerplate" data-icon="octicon-star" data-size="large"
+ data-show-count="true" aria-label="Star jackyef/svelte-boilerplate on GitHub">Star</a>
+<a class="github-button" href="https://github.com/jackyef/svelte-boilerplate/archive/master.zip" data-icon="octicon-cloud-download"
+ data-size="large" aria-label="Download jackyef/svelte-boilerplate on GitHub">Download</a>
+{/if}
+<span ref:scriptPlaceholder />
+
+<script>
+  export default {
+    data() {
+      return { 
+        SSR: typeof window === 'undefined',
+        show: false,
+      };
+    },
+    oncreate() {
+      const script = document.createElement('script');
+      script.src = 'https://buttons.github.io/buttons.js';
+
+      this.refs.scriptPlaceholder.appendChild(script);
+
+      script.onload = () => {
+        this.set({ show: true });
+      };
+    }
+  }
+</script>

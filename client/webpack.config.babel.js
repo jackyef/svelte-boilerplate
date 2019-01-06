@@ -2,7 +2,9 @@ const path = require('path');
 const appRootDir = require('app-root-dir');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const AssetsWebpackPlugin = require('assets-webpack-plugin');
+const fs = require('fs-extra');
+// const AssetsWebpackPlugin = require('assets-webpack-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 const ifElse = require(path.resolve(appRootDir.get(), 'utils/logic/ifElse')).default;
 const { normalizeCSS, criticalCSS } = require(path.resolve(appRootDir.get(), 'utils/html/critical-css'));
 
@@ -33,6 +35,9 @@ const productionPlugins = [
   }),
 ];
 
+console.log(`> Cleaning path: ${buildPath}`);
+fs.emptyDirSync(buildPath);
+
 module.exports.default = {
   entry: {
     bundle: entryPath,
@@ -43,8 +48,8 @@ module.exports.default = {
   target: 'web',
   output: {
     path: buildPath,
-    filename: ifProd('[name].[hash].js', '[name].js'),
-    chunkFilename: ifProd('chunk.[name].[id].[hash].js, chunk.[name].[id].js'),
+    filename: ifProd('[name].[hash].js', '[name].[hash].js'),
+    chunkFilename: ifProd('chunk.[name].[id].[hash].js', 'chunk.[name].[id].js'),
     publicPath,
   },
   module: {
@@ -99,8 +104,10 @@ module.exports.default = {
       chunkFilename: ifProd('[id].[hash].css', '[id].css'),
     }),
     ...ifProd(productionPlugins, []).filter(Boolean),
-    new AssetsWebpackPlugin({
-      path: buildPath,
+    new WebpackAssetsManifest({
+      output: path.resolve(buildPath, 'assets.json'),
+      writeToDisk: true,
+      publicPath: true,
     }),
   ],
   devtool: ifProd(false, 'source-map'),

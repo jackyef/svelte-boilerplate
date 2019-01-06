@@ -1,8 +1,10 @@
 import { normalizeCSS, criticalCSS } from '../../../utils/html/critical-css';
+import createScriptTag from '../../../utils/html/createScriptTag';
 
 const createHtmlHeader = ({
   head,
   css,
+  scripts,
 }) => {
   return `
   <!DOCTYPE html>
@@ -24,7 +26,7 @@ const createHtmlHeader = ({
       <style>${criticalCSS}</style>
       <style>${css}</style>
       ${head}
-      <script async defer src="https://buttons.github.io/buttons.js"></script>
+      ${scripts.map(createScriptTag).join()}
     </head>
   `
 };

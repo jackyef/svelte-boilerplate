@@ -15,7 +15,6 @@ server.listen(PORT, err => {
   } else {
     debug(`Svelte SSR server is running at http://${HOST}:${PORT} env:${process.env.NODE_ENV}`);
   }
-
 });
 
 if (module.hot) {
@@ -23,5 +22,6 @@ if (module.hot) {
     server.removeListener('request', currentApp);
     currentApp = app.callback();
     server.on('request', currentApp);
+    console.log('hot reloaded!')
   });
 }

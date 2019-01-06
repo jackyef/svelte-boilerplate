@@ -1,6 +1,7 @@
 const path = require('path');
 const appRootDir = require('app-root-dir');
 const webpack = require('webpack');
+const fs = require('fs-extra');
 const ifElse = require(path.resolve(appRootDir.get(), 'utils/logic/ifElse')).default;
 
 const mode = process.env.NODE_ENV || 'development';
@@ -26,6 +27,9 @@ const developmentPlugins = () => {
   return [];
 };
 
+console.log(`> Cleaning path: ${buildPath}`);
+fs.emptyDirSync(buildPath);
+
 module.exports.default = {
   entry: {
     index: entryPath,
@@ -43,6 +47,11 @@ module.exports.default = {
     libraryTarget: 'commonjs2',
   },
   watch: !prod,
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000,
+    ignored: [/node_modules/],
+  },
   module: {
     rules: [
       {
@@ -53,23 +62,24 @@ module.exports.default = {
             loader: 'svelte-loader',
             options: {
               generate: 'ssr',
+              hydratable: true,
               emitCss: false,
               css: false,
               // hotReload: true,
 							// hotOptions: {
 							// 	noPreserveState: true,
 							// },
-              // preprocess: require('svelte-preprocess')({
-              //   transformers: {
-              //     postcss: {
-              //       plugins: [
-              //         require('autoprefixer')({
-              //           browsers: 'last 4 versions',
-              //         }),
-              //       ],
-              //     },
-              //   },
-              // }),
+              preprocess: require('svelte-preprocess')({
+                transformers: {
+                  postcss: {
+                    plugins: [
+                      require('autoprefixer')({
+                        browsers: 'last 4 versions',
+                      }),
+                    ],
+                  },
+                },
+              }),
             },
           },
         ],

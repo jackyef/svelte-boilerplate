@@ -4,8 +4,18 @@ import CombinedStream from 'combined-stream';
 import { createHtmlHeader, createHtmlFooter } from './createHtml';
 
 import App from '../../../client/App.html';
+import assets from '../../../build/client/assets.json';
 
-const prod = process.env.NODE_ENV === 'production';
+console.log('renderer index reloaded');
+
+const getUsedAssets = assets => {
+  /**
+   * Because we can't implement something like Loadable.Capture currently,
+   * Let's just return the main bundle for now.
+   * (it is named 'bundle', if we change the webpack config, we will need to change this as well)
+   */
+  return [assets['bundle.js']];
+}
 
 const rendererMiddleware = async (ctx, next) => {
   const initialData = {
@@ -18,8 +28,10 @@ const rendererMiddleware = async (ctx, next) => {
   });
   const { html, css, head } = App.render(initialData, initialStore);
 
+  const usedAssets = getUsedAssets(assets);
+
   const responseStream = CombinedStream.create();
-  responseStream.append(createHtmlHeader({ css: css.code, head }));
+  responseStream.append(createHtmlHeader({ css: css.code, head, scripts: usedAssets }));
   responseStream.append(createHtmlFooter({ renderedComponent: html }));
 
   ctx.set({
