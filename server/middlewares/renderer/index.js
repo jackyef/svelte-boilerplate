@@ -1,4 +1,4 @@
-import { Store } from 'svelte/store';
+import { Store } from 'svelte/store.umd';
 import CombinedStream from 'combined-stream';
 
 import { createHtmlHeader, createHtmlFooter } from './createHtml';

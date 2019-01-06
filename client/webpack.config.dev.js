@@ -24,7 +24,7 @@ const webpackConfig = {
 			/**
 			 * We force this html to be loaded using ejs-loader
 			 * else, it will be handled by svelte-loader,
-			 *  because we defined it in baseConfig.modules.rules
+			 * because we defined it in baseConfig.modules.rules
 			 */
 			template: `!!ejs-loader!${baseShellPath}`,
 			normalizeCSS,
